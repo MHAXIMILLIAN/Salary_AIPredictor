@@ -120,7 +120,7 @@ def process_pdf_file(uploaded_file):
 # SIDEBAR NAVIGATION
 # -------------------------------
 with st.sidebar:
-    st.markdown('<div class="sidebar-header">💰 Navigation</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-header"> Navigation</div>', unsafe_allow_html=True)
 
     # Theme selector
     theme = st.selectbox("🎨 Theme", ["Light", "Dark"],
@@ -759,7 +759,7 @@ if st.session_state.page == "Single Prediction":
     # Hero Section
     st.markdown("""
     <div class="hero-section">
-        <h1 class="hero-title">💰 AI Salary Predictor Pro</h1>
+        <h1 class="hero-title"> AI Salary Predictor Pro</h1>
         <p class="hero-subtitle">Professional salary predictions with real-time market intelligence</p>
     </div>
     """, unsafe_allow_html=True)
@@ -1592,3 +1592,4 @@ st.markdown(
     unsafe_allow_html=True
 
 )
+
