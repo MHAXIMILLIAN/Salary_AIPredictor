@@ -14,7 +14,6 @@ import io
 # -------------------------------
 st.set_page_config(
     page_title="AI Salary Prediction System",
-    page_icon="💰",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -1591,4 +1590,5 @@ st.markdown(
     </div>
     """,
     unsafe_allow_html=True
+
 )
