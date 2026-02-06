@@ -948,22 +948,40 @@ if st.session_state.page == "Single Prediction":
             confidence = min(95, max(70, 75 + (years_exp * 1.5)))
             st.progress(confidence / 100, text=f"Prediction Confidence: {confidence}%")
 
-            # Feature Importance (if available)
-            if hasattr(model, 'named_steps') and hasattr(model.named_steps.get('model', None), 'feature_importances_'):
-                try:
-                    importances = model.named_steps['model'].feature_importances_
-                    feature_names = model.named_steps['prep'].get_feature_names_out()
-                    top_features = pd.DataFrame({
-                        "Feature": feature_names,
-                        "Importance": importances
-                    }).sort_values("Importance", ascending=False).head(5)
+# Feature Importance (if available)
+if hasattr(model, 'named_steps') and hasattr(model.named_steps.get('model', None), 'feature_importances_'):
+    try:
+        importances = model.named_steps['model'].feature_importances_
+        feature_names = model.named_steps['prep'].get_feature_names_out()
+        
+        # Clean up feature names for better readability
+        clean_names = []
+        for name in feature_names:
+            # Remove prefixes
+            clean = name.replace('num__', '').replace('cat__', '')
+            # Replace underscores with spaces
+            clean = clean.replace('_', ' ')
+            # Clean up specific patterns
+            clean = clean.replace('Education Level', 'Education')
+            clean = clean.replace('Job Title', 'Job')
+            clean = clean.replace('  ', ' ').strip()  # Remove double spaces
+            clean_names.append(clean)
+        
+        # Create DataFrame with cleaned names
+        top_features = pd.DataFrame({
+            "Feature": clean_names,
+            "Importance": importances
+        }).sort_values("Importance", ascending=False).head(5)
 
-                    st.markdown("### 🔍 Top Influencing Factors")
-                    for _, row in top_features.iterrows():
-                        st.caption(f"{row['Feature']}: {row['Importance']:.1%}")
-                except:
-                    pass
-
+        # Display top influencing factors
+        st.markdown("### 🔍 Top Influencing Factors")
+        for _, row in top_features.iterrows():
+            st.caption(f"{row['Feature']}: {row['Importance']:.1%}")
+            
+    except Exception as e:
+        # Optional: uncomment for debugging
+        # st.write(f"Feature importance error: {e}")
+        pass
 # =================================================================
 # SECTION 2: BATCH PREDICTION (CSV/PDF)
 # =================================================================
@@ -1592,4 +1610,5 @@ st.markdown(
     unsafe_allow_html=True
 
 )
+
 
