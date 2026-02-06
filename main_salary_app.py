@@ -983,6 +983,16 @@ if hasattr(model, 'named_steps') and hasattr(model.named_steps.get('model', None
         # Optional: uncomment for debugging
         # st.write(f"Feature importance error: {e}")
         pass
+        
+# RESET BUTTON - Clear form for another prediction
+    st.markdown("---")
+    reset_col1, reset_col2, reset_col3 = st.columns([1, 3, 1])
+    with reset_col2:
+        if st.button("🔄 New Prediction",
+                    use_container_width=True,
+                    type="secondary",
+                    help="Clear all inputs and start a new prediction"):
+            st.rerun()
 
 # =================================================================
 # SECTION 2: BATCH PREDICTION (CSV/PDF)
@@ -1612,5 +1622,6 @@ st.markdown(
     unsafe_allow_html=True
 
 )
+
 
 
