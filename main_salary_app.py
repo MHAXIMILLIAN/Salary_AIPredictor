@@ -14,7 +14,7 @@ import io
 # -------------------------------
 st.set_page_config(
     page_title="AI Salary Prediction System",
-    page_icon="💰",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -121,10 +121,10 @@ def process_pdf_file(uploaded_file):
 # SIDEBAR NAVIGATION
 # -------------------------------
 with st.sidebar:
-    st.markdown('<div class="sidebar-header">💰 Navigation</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-header"> Navigation</div>', unsafe_allow_html=True)
 
     # Theme selector
-    theme = st.selectbox("🎨 Theme", ["Light", "Dark"],
+    theme = st.selectbox("Theme", ["Light", "Dark"],
                          index=0 if st.session_state.theme == "Light" else 1)
     if theme != st.session_state.theme:
         st.session_state.theme = theme
@@ -760,7 +760,7 @@ if st.session_state.page == "Single Prediction":
     # Hero Section
     st.markdown("""
     <div class="hero-section">
-        <h1 class="hero-title">💰 AI Salary Predictor Pro</h1>
+        <h1 class="hero-title"> AI Salary Predictor Pro</h1>
         <p class="hero-subtitle">Professional salary predictions with real-time market intelligence</p>
     </div>
     """, unsafe_allow_html=True)
@@ -880,13 +880,13 @@ if st.session_state.page == "Single Prediction":
             user_input[f"Skill_{skill_col}"] = int(skill in skills)
 
         # Make prediction
-        with st.spinner("🧠 AI is analyzing your profile..."):
+        with st.spinner("AI is analyzing your profile..."):
             predicted_salary = model.predict(user_input)[0]
 
         # RESULT DISPLAY
         st.markdown(f"""
         <div class="result-container">
-            <h2>🎉 Prediction Complete!</h2>
+            <h2>Prediction Complete!</h2>
             <div class="salary-amount">${predicted_salary:,.2f}</div>
             <p>Estimated Annual Salary</p>
         </div>
@@ -1621,3 +1621,4 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
