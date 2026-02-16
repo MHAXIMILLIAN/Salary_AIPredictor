@@ -14,6 +14,7 @@ import io
 # -------------------------------
 st.set_page_config(
     page_title="AI Salary Prediction System",
+    page_icon="💰",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -120,7 +121,7 @@ def process_pdf_file(uploaded_file):
 # SIDEBAR NAVIGATION
 # -------------------------------
 with st.sidebar:
-    st.markdown('<div class="sidebar-header"> Navigation</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-header">💰 Navigation</div>', unsafe_allow_html=True)
 
     # Theme selector
     theme = st.selectbox("🎨 Theme", ["Light", "Dark"],
@@ -759,7 +760,7 @@ if st.session_state.page == "Single Prediction":
     # Hero Section
     st.markdown("""
     <div class="hero-section">
-        <h1 class="hero-title"> AI Salary Predictor Pro</h1>
+        <h1 class="hero-title">💰 AI Salary Predictor Pro</h1>
         <p class="hero-subtitle">Professional salary predictions with real-time market intelligence</p>
     </div>
     """, unsafe_allow_html=True)
@@ -949,42 +950,49 @@ if st.session_state.page == "Single Prediction":
             st.progress(confidence / 100, text=f"Prediction Confidence: {confidence}%")
 
             # Feature Importance (if available)
-# Feature Importance (if available)
-if hasattr(model, 'named_steps') and hasattr(model.named_steps.get('model', None), 'feature_importances_'):
-    try:
-        importances = model.named_steps['model'].feature_importances_
-        feature_names = model.named_steps['prep'].get_feature_names_out()
-        
-        # Clean up feature names for better readability
-        clean_names = []
-        for name in feature_names:
-            # Remove prefixes
-            clean = name.replace('num__', '').replace('cat__', '')
-            # Replace underscores with spaces
-            clean = clean.replace('_', ' ')
-            # Clean up specific patterns
-            clean = clean.replace('Education Level', 'Education')
-            clean = clean.replace('Job Title', 'Job')
-            clean = clean.replace('  ', ' ').strip()  # Remove double spaces
-            clean_names.append(clean)
-        
-        # Create DataFrame with cleaned names
-        top_features = pd.DataFrame({
-            "Feature": clean_names,
-            "Importance": importances
-        }).sort_values("Importance", ascending=False).head(5)
+        if hasattr(model, 'named_steps') and hasattr(model.named_steps.get('model', None), 'feature_importances_'):
+            try:
+                importances = model.named_steps['model'].feature_importances_
+                feature_names = model.named_steps['prep'].get_feature_names_out()
 
-        # Display top influencing factors
-        st.markdown("### 🔍 Top Influencing Factors")
-        for _, row in top_features.iterrows():
-            st.caption(f"{row['Feature']}: {row['Importance']:.1%}")
-            
-    except Exception as e:
-        # Optional: uncomment for debugging
-        # st.write(f"Feature importance error: {e}")
-        pass
-        
+                # Clean up feature names for better readability
+                clean_names = []
+                for name in feature_names:
+                    # Remove prefixes
+                    clean = name.replace('num__', '').replace('cat__', '')
+                    # Replace underscores with spaces
+                    clean = clean.replace('_', ' ')
+                    # Clean up specific patterns
+                    clean = clean.replace('Education Level', 'Education')
+                    clean = clean.replace('Job Title', 'Job')
+                    clean = clean.replace('  ', ' ').strip()  # Remove double spaces
+                    clean_names.append(clean)
 
+                # Create DataFrame with cleaned names
+                top_features = pd.DataFrame({
+                    "Feature": clean_names,
+                    "Importance": importances
+                }).sort_values("Importance", ascending=False).head(5)
+
+                # Display top influencing factors
+                st.markdown("### 🔍 Top Influencing Factors")
+                for _, row in top_features.iterrows():
+                    st.caption(f"{row['Feature']}: {row['Importance']:.1%}")
+
+            except Exception as e:
+                # Optional: uncomment for debugging
+                # st.write(f"Feature importance error: {e}")
+                pass
+
+# RESET BUTTON - Clear form for another prediction
+    st.markdown("---")
+    reset_col1, reset_col2, reset_col3 = st.columns([1, 3, 1])
+    with reset_col2:
+        if st.button("🔄 New Prediction",
+                    use_container_width=True,
+                    type="secondary",
+                    help="Clear all inputs and start a new prediction"):
+            st.rerun()
 
 # =================================================================
 # SECTION 2: BATCH PREDICTION (CSV/PDF)
@@ -1612,9 +1620,4 @@ st.markdown(
     </div>
     """,
     unsafe_allow_html=True
-
 )
-
-
-
-
